@@ -196,7 +196,7 @@ final class ModulesManagerServiceProvider extends PackageServiceProvider
         $package
             ->name('laravel-modules-manager')
             ->hasConfigFile('modules-manager')
-            ->hasMigration('create_module_states_table');
+            ->hasMigration('2026_07_23_000000_create_module_states_table'); // spatie matches the on-disk filename (sans .php), so pass the full timestamped name
     }
 
     public function packageRegistered(): void
@@ -225,6 +225,14 @@ abstract class TestCase extends PackageTestCase
     protected function modulePackageProviders($app): array
     {
         return [ModulesManagerServiceProvider::class];
+    }
+
+    // Testbench does NOT auto-run a package's provider-registered migrations, and
+    // core's PackageTestCase only creates the users table — load ours explicitly.
+    protected function defineDatabaseMigrations(): void
+    {
+        parent::defineDatabaseMigrations();
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
     }
 }
 ```
@@ -381,7 +389,7 @@ final class ModuleState extends Model
 - [ ] **Step 5: Run to verify it passes**
 
 Run: `"$PHP84" vendor/bin/pest tests/Feature/ModuleStateTest.php`
-Expected: PASS (1 passed). (Testbench runs package migrations from `database/migrations` automatically.)
+Expected: PASS (1 passed). (The migration runs because `tests/TestCase.php` loads it via `defineDatabaseMigrations()` -> `loadMigrationsFrom()` — Testbench does NOT auto-run provider-registered migrations.)
 
 - [ ] **Step 6: Commit**
 
