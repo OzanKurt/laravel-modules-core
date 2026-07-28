@@ -8,6 +8,7 @@ use Kurt\Modules\Core\Contracts\ModuleRegistry;
 use Kurt\Modules\Core\Contracts\UserResolver;
 use Kurt\Modules\Core\Modules\Registry;
 use Kurt\Modules\Core\Support\ConfigUserResolver;
+use Kurt\Modules\Core\Support\ModuleCacheFactory;
 use Spatie\LaravelPackageTools\Package;
 
 final class CoreServiceProvider extends PackageServiceProvider
@@ -27,6 +28,7 @@ final class CoreServiceProvider extends PackageServiceProvider
     public function packageRegistered(): void
     {
         $this->app->singleton(UserResolver::class, fn ($app) => new ConfigUserResolver($app['config']));
-        $this->app->singleton(ModuleRegistry::class, fn () => new Registry());
+        $this->app->singleton(ModuleRegistry::class, fn () => new Registry);
+        $this->app->singleton(ModuleCacheFactory::class, fn ($app) => new ModuleCacheFactory($app['cache'], $app['config']));
     }
 }
