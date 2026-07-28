@@ -28,17 +28,17 @@ interface ModuleCache
     public function remember(string $key, Closure $callback, ?int $ttl = null): mixed;
 
     public function forget(string $key): void;
-
-    public function flush(): void;
 }
 ```
+
+(`flush()` deliberately omitted: a portable prefix-scoped flush isn't available across all cache drivers, and the pilot busts specific keys via `forget()`. Add it later via cache tags only if a real need appears.)
 
 ### 2.2 Implementation
 
 `Kurt\Modules\Core\Support\ConfigModuleCache implements ModuleCache`:
 - Constructor: `(Repository $store, bool $enabled, string $prefix, int $ttl)`.
 - `remember()`: `enabled=false` ise callback'i doğrudan çağırır (cache yok). Aksi halde `{$prefix}:{$key}` anahtarıyla store'dan okur/yazar; `null` sonucu bir **sentinel** ile cache'lenir (negative lookup da cache'lenir), okumada unwrap edilir.
-- `forget()`/`flush()`: prefixli anahtarı/namespace'i temizler.
+- `forget()`: prefixli anahtarı temizler.
 - Store yalnızca **isimle** seçilir (config:cache güvenli - closure taşınmaz).
 
 ### 2.3 Factory
@@ -97,7 +97,7 @@ Her modülün `config/{slug}.php`'sine eklenen standart blok:
 
 ## 5. Test stratejisi
 
-- **Core:** `ConfigModuleCache` (remember hit/miss, `enabled=false` bypass, forget, flush, null/negative sentinel, ttl geçişi); `ModuleCacheFactory` config'i doğru okuyor (enabled/store/prefix/ttl), config'i olmayan modül → default.
+- **Core:** `ConfigModuleCache` (remember hit/miss, `enabled=false` bypass, forget, null/negative sentinel, ttl geçişi); `ModuleCacheFactory` config'i doğru okuyor (enabled/store/prefix/ttl), config'i olmayan modül → default.
 - **Blog:** cache'li read ikinci çağrıda store'dan geliyor (query-count/spy ile); `PostObserver` gerçek edit'te bust ediyor; **view-only bump by-slug'ı bust ETMİYOR** (regression); `enabled=false` bypass edildiğinde out-of-band DB değişimi anında görünüyor.
 - Pest + `PackageTestCase`, phpstan L8, aile coverage standardı (≥80%).
 
