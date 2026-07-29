@@ -34,4 +34,10 @@ final class ModuleCacheFactory
             (int) ($cfg['ttl'] ?? 3600),
         );
     }
+
+    /** A generational cache over the module's {@see ModuleCache} (see ACL caching). */
+    public function generationalFor(string $module): GenerationalModuleCache
+    {
+        return new GenerationalModuleCache($this->for($module));
+    }
 }
