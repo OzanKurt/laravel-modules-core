@@ -4,8 +4,8 @@ Shared bootstrap kit for [KurtModules](https://github.com/ozankurt) Laravel pack
 
 ## Requirements
 
-- PHP 8.3+
-- Laravel 12.x
+- PHP 8.4+
+- Laravel 13.x
 - (Optional) Filament 3, 4, or 5
 
 ## Installation
