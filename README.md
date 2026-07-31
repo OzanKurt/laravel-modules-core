@@ -1,11 +1,13 @@
 # laravel-modules-core
 
+[![tests](https://github.com/OzanKurt/laravel-modules-core/actions/workflows/tests.yml/badge.svg)](https://github.com/OzanKurt/laravel-modules-core/actions/workflows/tests.yml)
+
 Shared bootstrap kit for [KurtModules](https://github.com/ozankurt) Laravel packages.
 
 ## Requirements
 
-- PHP 8.4+
-- Laravel 13.x
+- PHP `^8.4`
+- Laravel `^13.0`
 - (Optional) Filament 3, 4, or 5
 
 ## Installation
@@ -206,6 +208,19 @@ Do **not** return a bare `JsonResource` from a route *and* also call `respond()`
 The outer group (prefix, base middleware, throttle, `"{slug}.api."` name prefix)
 is applied by `registerModuleApi()`; the route file only distinguishes read vs
 write.
+
+## Testing
+
+```bash
+composer install
+vendor/bin/pint --test
+vendor/bin/phpstan analyse --memory-limit=2G
+vendor/bin/pest
+```
+
+CI runs the same checks on every push and pull request
+(`.github/workflows/tests.yml`), against PHP 8.4 / Laravel 13. Static analysis
+is held at **PHPStan level 8**; the suite runs on **Pest 5**.
 
 ## License
 
