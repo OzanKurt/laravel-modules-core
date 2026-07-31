@@ -7,7 +7,7 @@ use Kurt\Modules\Core\Modules\ModuleManifest;
 use Kurt\Modules\Core\Modules\Registry;
 
 it('registers and retrieves manifests keyed by slug', function () {
-    $registry = new Registry();
+    $registry = new Registry;
     expect($registry)->toBeInstanceOf(ModuleRegistry::class);
 
     $blog = ModuleManifest::make('blog');
@@ -24,7 +24,7 @@ it('registers and retrieves manifests keyed by slug', function () {
 });
 
 it('overwrites a manifest registered under the same slug', function () {
-    $registry = new Registry();
+    $registry = new Registry;
     $first = ModuleManifest::make('blog')->version('1.0.0');
     $second = ModuleManifest::make('blog')->version('2.0.0');
 

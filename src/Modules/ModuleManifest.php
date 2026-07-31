@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Kurt\Modules\Core\Modules;
 
+use Kurt\Modules\Core\Contracts\ModuleRegistry;
+
 /**
  * A module's self-declaration: identity, dependencies, and the feature/setting
  * keys it exposes with their default values. Collected into the
- * {@see \Kurt\Modules\Core\Contracts\ModuleRegistry} at boot. Pure value object -
+ * {@see ModuleRegistry} at boot. Pure value object -
  * holds no runtime state and touches no DB.
  */
 final class ModuleManifest

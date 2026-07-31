@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Kurt\Modules\Core\Modules;
 
 use Kurt\Modules\Core\Contracts\ModuleRegistry;
+use Kurt\Modules\Core\Providers\PackageServiceProvider;
 
 /**
  * In-memory module registry. Populated once per request during package boot
- * (see {@see \Kurt\Modules\Core\Providers\PackageServiceProvider}); a later
+ * (see {@see PackageServiceProvider}); a later
  * same-slug registration overwrites the earlier one.
  */
 final class Registry implements ModuleRegistry

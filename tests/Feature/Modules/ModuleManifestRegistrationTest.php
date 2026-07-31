@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Illuminate\Foundation\Application;
 use Kurt\Modules\Core\Contracts\ModuleRegistry;
 use Kurt\Modules\Core\Modules\ModuleManifest;
 use Kurt\Modules\Core\Providers\PackageServiceProvider;
@@ -29,7 +30,7 @@ final class DemoModuleServiceProvider extends PackageServiceProvider
 
 final class ModuleManifestRegistrationTest extends PackageTestCase
 {
-    /** @param  \Illuminate\Foundation\Application  $app */
+    /** @param  Application  $app */
     protected function modulePackageProviders($app): array
     {
         return [DemoModuleServiceProvider::class];
